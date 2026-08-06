@@ -8,29 +8,62 @@ import com.mycompany.noah.core.Individual;
 import java.util.Random;
 
 /**
+ * Implements Boltzmann selection strategy for genetic algorithms.
+ * <p>
+ * This selection method uses a temperature-based probability distribution
+ * derived from the Boltzmann distribution of statistical mechanics. The
+ * temperature decreases over generations (cooling schedule), gradually
+ * shifting the selection pressure from exploration to exploitation.
+ * Higher fitness individuals have exponentially higher probability of
+ * being selected, controlled by the current temperature.
+ * </p>
  *
- * @author willi
+ * @author MAUKOSKI, W. X.
  */
 public class BoltzmanSelection implements SelectionStrategy {
 
+    /** Generation counter used for the cooling schedule. */
     private int count;
+    
+    /** Initial temperature for the Boltzmann distribution. */
     private double initialTemperature;
 
+    /**
+     * Constructs a {@code BoltzmanSelection} strategy with the given
+     * initial temperature.
+     *
+     * @param initialTemperature the starting temperature value
+     */
     public BoltzmanSelection(double initialTemperature) {
         this.count = 0;
         this.initialTemperature = initialTemperature;
     }
 
+    /**
+     * Selects parents using the Boltzmann probability distribution.
+     * <p>
+     * The selection probability for each individual is proportional to
+     * {@code exp(fitness / temperature)} for maximization or
+     * {@code exp(-fitness / temperature)} for minimization. The temperature
+     * decreases according to the cooling schedule {@code T = T0 / (1 + generation)}.
+     * </p>
+     *
+     * @param population the current population of individuals
+     * @param populationSize the size of the population
+     * @param numParents the number of parents to select
+     * @param optimizationMode {@code "MAXIMIZATION"} or {@code "MINIMIZATION"}
+     * @return an array of indices of the selected parents
+     */
     @Override
     public int[] selectParents(Individual<?>[] population, int populationSize,
             int numParents, String optimizationMode) {
         int[] parents = new int[numParents];
         double[] probabilityWeight = new double[populationSize];
 
-        // Atualiza a temperatura com resfriamento: T = T0 / (1 + geração)
+        // Updates temperature with cooling: T = T0 / (1 + generation)
         double temperature = this.initialTemperature / (1.0 + this.count);
 
-        // Calcula os pesos não normalizados
+        // Calculates unnormalized weights
         double maxWeight = 0.0;
         for (int i = 0; i < populationSize; i++) {
             double fitness = population[i].getFitness();
@@ -40,7 +73,7 @@ public class BoltzmanSelection implements SelectionStrategy {
             } else { // MINIMIZATION
                 exponent = -fitness / temperature;
             }
-            // Para evitar overflow, limitamos o expoente a um valor seguro (~700)
+            // To avoid overflow, limit the exponent to a safe value (~700)
             if (exponent > 700.0) {
                 exponent = 700.0;
             }
@@ -53,17 +86,17 @@ public class BoltzmanSelection implements SelectionStrategy {
             }
         }
 
-        // (Opcional) Subtrai o máximo para evitar perda de precisão em valores muito grandes,
-        // mas não é estritamente necessário se já limitamos o expoente.
-        // Calcula a soma total dos pesos
+        // (Optional) Subtract the maximum to avoid loss of precision with very large values,
+        // but not strictly necessary if the exponent is already limited.
+        // Calculates the total sum of weights
         double totalWeight = 0.0;
         for (double w : probabilityWeight) {
             totalWeight += w;
         }
 
-        Random r = new Random();  // ou use um campo da classe
+        Random r = new Random();  // or use a class field
 
-        // Seleciona numParents pais usando roleta
+        // Selects numParents parents using roulette
         for (int p = 0; p < numParents; p++) {
             double point = r.nextDouble() * totalWeight;
             double sum = 0.0;
@@ -75,7 +108,7 @@ public class BoltzmanSelection implements SelectionStrategy {
             parents[p] = idx;
         }
 
-        this.count++;  // incrementa o contador de gerações para a próxima chamada
+        this.count++;  // increments the generation counter for the next call
         return parents;
     }
 

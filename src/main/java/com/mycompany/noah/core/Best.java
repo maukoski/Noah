@@ -5,29 +5,54 @@
 package com.mycompany.noah.core;
 
 /**
+ * Stores information about the best individual found during the genetic
+ * algorithm execution, including the individual itself and the generation
+ * in which it was discovered.
  *
- * @author willi
+ * @param <T> the type of the individual's genotype
+ * @author MAUKOSKI, W. X.
  */
 public class Best<T> {
+    
+    /** The best individual found. */
     private Individual<T> individual;
+    
+    /** The generation in which the best individual was found. */
     private int generation;
 
-
+    /**
+     * Returns the best individual found.
+     *
+     * @return the best individual
+     */
     public Individual<T> getIndividual() {
         return individual;
     }
 
+    /**
+     * Sets the best individual.
+     *
+     * @param individual the individual to set as best
+     */
     public void setIndividual(Individual<T> individual) {
         this.individual = individual;
     }
 
+    /**
+     * Returns the generation in which the best individual was found.
+     *
+     * @return the generation number
+     */
     public int getGeneration() {
         return generation;
     }
 
+    /**
+     * Sets the generation in which the best individual was found.
+     *
+     * @param generation the generation number
+     */
     public void setGeneration(int generation) {
         this.generation = generation;
     }
-    
-    
 }

@@ -12,7 +12,7 @@ package com.mycompany.noah.core;
  *
  * @param <T> The type of the genotype.
  *
- * @author willi
+ * @author MAUKOSKI, W. X.
  */
 public abstract class Individual<T> implements Comparable<Individual<T>> {
 
@@ -97,10 +97,20 @@ public abstract class Individual<T> implements Comparable<Individual<T>> {
         this.fitness = fitness;
     }
 
+     /**
+     * Returns the mutation rate applied to this individual.
+     *
+     * @return the mutation rate (between 0 and 1)
+     */
     public double getMutationTax() {
         return mutationTax;
     }
 
+    /**
+     * Sets the mutation rate for this individual.
+     *
+     * @param mutationTax the mutation rate (between 0 and 1)
+     */
     public void setMutationTax(double mutationTax) {
         this.mutationTax = mutationTax;
     }

@@ -10,16 +10,16 @@ import java.util.Random;
 
 /**
  *
- * @author willi
+ * @author MAUKOSKI, W. X.
  */
 public class IndividualRastrigin extends Individual<Variables> {
 
-    // Limites do domínio da função Rosenbrock (pode ajustar)
+    // Rosenbrock function domain limits (adjustable)
     private static final double MIN_VAL = -5.12;
     private static final double MAX_VAL = 5.12;
 
-    private int genotypeSize;   // bits por variável
-    private int numVariables;   // dimensão do problema
+    private int genotypeSize;   // bits per variable
+    private int numVariables;   // problem dimension
 
     public IndividualRastrigin(double mutationTax, int genotypeSize, int numVariables) {
         super(mutationTax);
@@ -31,7 +31,7 @@ public class IndividualRastrigin extends Individual<Variables> {
 
     public IndividualRastrigin(double mutationTax, Variables genotype) {
         super(mutationTax);
-        this.genotypeSize = genotype.getX()[0].length();  // presume strings de mesmo tamanho
+        this.genotypeSize = genotype.getX()[0].length();  // assumes strings of equal length
         this.numVariables = genotype.getX().length;
         this.setGenotype(genotype);
         this.setFitness(this.fitnessEvaluate());
@@ -46,17 +46,16 @@ public class IndividualRastrigin extends Individual<Variables> {
         // Rastringin
         for (int i = 0; i < numVariables; i++) {
             double xi = decode(genes[i]);
-            result +=  xi*xi -10 * Math.cos(2.0 * Math.PI * xi);
+            result += xi * xi - 10 * Math.cos(2.0 * Math.PI * xi);
         }
         return result;
     }
 
     /**
-     * Converte uma string binária em um valor real dentro de [MIN_VAL,
-     * MAX_VAL].
+     * Converts a binary string into a real value within [MIN_VAL, MAX_VAL].
      */
     private double decode(String binary) {
-        long intValue = Long.parseLong(binary, 2);                     // 0 a 2^L - 1
+        long intValue = Long.parseLong(binary, 2);                     // 0 to 2^L - 1
         double maxInt = Math.pow(2, binary.length()) - 1;
         return MIN_VAL + (MAX_VAL - MIN_VAL) * (intValue / maxInt);
     }
@@ -94,37 +93,37 @@ public class IndividualRastrigin extends Individual<Variables> {
         String[] son = new String[numVariables];
         String[] daughter = new String[numVariables];
 
-        // Crossover de um ponto por variável
+        // One-point crossover per variable
         for (int i = 0; i < numVariables; i++) {
             String fGene = father.getX()[i];
             String mGene = mother.getX()[i];
-            int point = r.nextInt(fGene.length());  // ponto de corte
+            int point = r.nextInt(fGene.length());  // cut point
             son[i] = fGene.substring(0, point) + mGene.substring(point);
             daughter[i] = mGene.substring(0, point) + fGene.substring(point);
         }
 
-        // Cria os filhos (já com fitness avaliado sobre o genótipo crossover)
-        // Depois:
+        // Creates children (with fitness evaluated on the crossover genotype)
+        // Then:
         IndividualRastrigin child1 = this.createIndividual(new Variables(son));
         IndividualRastrigin child2 = this.createIndividual(new Variables(daughter));
 
-        // Aplica mutação e ATUALIZA fitness
+        // Applies mutation and UPDATES fitness
         Variables mutSon = this.mutation((Variables) child1.getGenotype());
         child1.setGenotype(mutSon);
-        child1.setFitness(child1.fitnessEvaluate());   // ← corrigido
+        child1.setFitness(child1.fitnessEvaluate());   // ← fixed
 
         Variables mutDaughter = this.mutation((Variables) child2.getGenotype());
         child2.setGenotype(mutDaughter);
-        child2.setFitness(child2.fitnessEvaluate());   // ← corrigido
+        child2.setFitness(child2.fitnessEvaluate());   // ← fixed
 
         return new Individual[]{child1, child2};
 
     }
 
     /**
-     * Método de fábrica para criar um novo indivíduo do mesmo tipo a partir de
-     * um genótipo. Subclasses devem sobrescrever para retornar instâncias da
-     * classe correta.
+     * Factory method to create a new individual of the same type from a
+     * genotype. Subclasses must override to return instances of the correct
+     * class.
      */
     protected IndividualRastrigin createIndividual(Variables genotype) {
         return new IndividualRastrigin(this.getMutationTax(), genotype);

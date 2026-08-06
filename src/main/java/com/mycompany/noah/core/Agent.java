@@ -19,7 +19,7 @@ import org.knowm.xchart.XYChartBuilder;
  *
  * @param <T> the type of Individual used in the genetic algorithm
  *
- * @author willi
+ * @author MAUKOSKI, W. X.
  */
 public class Agent<T extends Individual<?>> {
 
@@ -71,7 +71,7 @@ public class Agent<T extends Individual<?>> {
         this.populationSize = populationSize;
         this.epoch = epoch;
         this.sizeSelection = sizeSelection;
-        this.selection = selection;               // ← armazena a estratégia
+        this.selection = selection;               // ←  store de strategy
         this.fitnessHistory = new ArrayList<>();
         this.population = population;
     }
@@ -90,7 +90,7 @@ public class Agent<T extends Individual<?>> {
         }
     }
 
-    /**
+        /**
      * Executes the genetic algorithm for a specified number of epochs,
      * optimizing either for minimization or maximization of fitness. In each
      * epoch, the population is evaluated, and new individuals are generated
@@ -98,7 +98,7 @@ public class Agent<T extends Individual<?>> {
      *
      * @param optimization either {@code MINIMIZATION} or {@code MAXIMIZATION}
      * to define the fitness optimization goal.
-     * @param selectionMode the selection mode to use for generating the next
+     * @param selection the selection strategy to use for generating the next
      * generation, such as {@code TOURNAMENT} or {@code ROULETTE}.
      *
      */
@@ -133,17 +133,18 @@ public class Agent<T extends Individual<?>> {
                 }
             }
 
-            // Adicionar o fitness do melhor indivíduo na lista de histórico
+            // Add the best individual's fitness to the history list
             fitnessHistory.add(this.best.getIndividual().getFitness());
 
-            // Gerar a nova geração com o modo de seleção escolhido
+            // Generate the new generation with the chosen selection mode
             this.newGeneration(newIndividuasl, selection);
         }
 
-        // Plotar a evolução do fitness ao longo das gerações
+        // Plot the fitness evolution over generations
         //this.plotFitnessHistory();
     }
-
+    
+    
     /**
      * Creates a new generation of individuals based on the specified selection
      * mode.
@@ -167,17 +168,17 @@ public class Agent<T extends Individual<?>> {
         }
     }
 
-    /**
+       /**
      * Performs tournament selection, selecting a subset of individuals to breed
      * new individuals based on their fitness.
      *
-     * @param newIndividuasl the number of new individuals to generate
+     * @return the index of the selected individual
      */
     private int tournamentSelection() {
         int[] tournament = new int[this.sizeSelection];
         Random r = new Random();
 
-        // Preencher o array com valores únicos
+        // Fill the array with unique values
         for (int i = 0; i < tournament.length; i++) {
             int selectedIndividual;
             boolean flag;
@@ -186,7 +187,7 @@ public class Agent<T extends Individual<?>> {
                 selectedIndividual = r.nextInt(this.populationSize);
                 flag = false;
 
-                // Verificar se o índice já foi selecionado
+                // Check if the index has already been selected
                 for (int j = 0; j < i; j++) {
                     if (tournament[j] == selectedIndividual) {
                         flag = true;
@@ -194,9 +195,9 @@ public class Agent<T extends Individual<?>> {
                     }
                 }
 
-            } while (flag);  // Repete até encontrar um índice não selecionado
+            } while (flag);  // Repeat until an unselected index is found
 
-            tournament[i] = selectedIndividual;  // Adiciona o índice selecionado
+            tournament[i] = selectedIndividual;  // Add the selected index
         }
 
         Arrays.sort(tournament);
@@ -205,16 +206,16 @@ public class Agent<T extends Individual<?>> {
 
     }
 
-    private void roulette(int newIndividuasl) {
+        private void roulette(int newIndividuasl) {
         Random r = new Random();
         int popSize = this.populationSize;
 
-        // 1. Construir array de fitness ajustado (não negativo) para roleta
+        // 1. Build adjusted fitness array (non-negative) for roulette
         double[] adjustedFitness = new double[popSize];
 
         if (this.optimazionalMode.equals(MAXIMIZATION)) {
-            // Para maximização, fitness maior deve ter maior chance.
-            // Se houver negativos, deslocamos para que o menor fique em 0.
+            // For maximization, higher fitness should have higher chance.
+            // If there are negatives, shift so that the lowest becomes 0.
             double minFit = Double.MAX_VALUE;
             for (int i = 0; i < popSize; i++) {
                 if (population[i].getFitness() < minFit) {
@@ -226,8 +227,8 @@ public class Agent<T extends Individual<?>> {
                 adjustedFitness[i] = population[i].getFitness() + offset;
             }
         } else { // MINIMIZATION
-            // Para minimização, fitness menor deve ter maior chance.
-            // 1. Encontrar o fitness máximo (pior) e mínimo (melhor)
+            // For minimization, lower fitness should have higher chance.
+            // 1. Find maximum fitness (worst) and minimum fitness (best)
             double maxFit = Double.MIN_VALUE;
             double minFit = Double.MAX_VALUE;
             for (int i = 0; i < popSize; i++) {
@@ -239,24 +240,24 @@ public class Agent<T extends Individual<?>> {
                     minFit = fit;
                 }
             }
-            // 2. Criar um array onde o menor fitness tem o maior valor.
-            //    Fórmula: maxFit - fitness[i] + 1 (garante todos > 0)
+            // 2. Create an array where the lowest fitness has the highest value.
+            //    Formula: maxFit - fitness[i] + 1 (ensures all > 0)
             for (int i = 0; i < popSize; i++) {
                 adjustedFitness[i] = maxFit - population[i].getFitness() + 1;
             }
         }
 
-        // 2. Calcular fitness total ajustado
+        // 2. Calculate total adjusted fitness
         double totalAdjustedFitness = 0;
         for (double f : adjustedFitness) {
             totalAdjustedFitness += f;
         }
 
-        // 3. Para cada par de pais (substituir newIndividuasl/2 indivíduos)
+        // 3. For each pair of parents (replace newIndividuasl/2 individuals)
         for (int i = 0; i < newIndividuasl / 2; i++) {
             int[] parents = new int[2];
 
-            // Selecionar dois pais distintos
+            // Select two distinct parents
             for (int j = 0; j < 2; j++) {
                 double point = r.nextDouble() * totalAdjustedFitness;
                 double sum = 0;
@@ -271,7 +272,7 @@ public class Agent<T extends Individual<?>> {
             // Crossover
             Individual[] children = population[parents[0]].crossover(population[parents[1]]);
 
-            // Substituir os pais pelos filhos
+            // Replace parents with children
             population[parents[0]] = children[0];
             population[parents[1]] = children[1];
         }
@@ -336,24 +337,24 @@ public class Agent<T extends Individual<?>> {
         this.best = null; // será recriado no próximo run()
     }
 
-    /**
+        /**
      * Plots the fitness history over the generations using XChart.
      */
     public void plotFitnessHistory() {
         XYChart chart = new XYChartBuilder().width(800).height(600).title("Fitness Over Generations")
                 .xAxisTitle("Generation").yAxisTitle("Fitness").build();
 
-        // Convertendo a lista de fitnessHistory para um array
+        // Converting the fitnessHistory list to an array
         double[] fitnessArray = fitnessHistory.stream().mapToDouble(Double::doubleValue).toArray();
         double[] generations = new double[fitnessArray.length];
         for (int i = 0; i < generations.length; i++) {
             generations[i] = i;
         }
 
-        // Adicionando os dados ao gráfico
+        // Adding data to the chart
         chart.addSeries("Best Fitness", generations, fitnessArray);
 
-        // Exibindo o gráfico em uma janela
+        // Displaying the chart in a window
         JFrame frame = new JFrame("Fitness Plot");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         XChartPanel<XYChart> panel = new XChartPanel<>(chart);

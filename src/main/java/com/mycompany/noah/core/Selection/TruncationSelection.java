@@ -3,12 +3,43 @@ package com.mycompany.noah.core.Selection;
 import com.mycompany.noah.core.Individual;
 import java.util.Random;
 
+/**
+ * Implements truncation selection strategy for genetic algorithms.
+ * <p>
+ * Truncation selection keeps only a fixed percentage of the best individuals
+ * (the elite) and discards the rest. The next generation is formed by:
+ * <ol>
+ *   <li>Copying the elite individuals directly to the new population
+ *       (elitism, preserving the best solutions).</li>
+ *   <li>Filling the remaining slots with offspring generated through
+ *       crossover between randomly selected parents from the elite.</li>
+ * </ol>
+ * This creates strong selection pressure and converges quickly, but may
+ * reduce genetic diversity and lead to premature convergence.
+ * </p>
+ * <p>
+ * Note: This strategy overrides the default {@code evolvePopulation} method
+ * instead of implementing the standard parent selection approach, as truncation
+ * operates on the entire population replacement rather than individual parent
+ * selection.
+ * </p>
+ *
+ * @author MAUKOSKI, W. X.
+ */
 public class TruncationSelection implements SelectionStrategy {
 
-    private final double eliteFraction; // valor entre 0 e 1 (ex.: 0.10 = 10%)
+    /** Fraction of the population kept as elite (between 0 and 1). */
+    private final double eliteFraction;
 
+    /**
+     * Constructs a {@code TruncationSelection} strategy.
+     *
+     * @param elitePercentage the percentage of the population to keep as elite
+     *                        (between 0 and 100, e.g., 10 for 10%)
+     * @throws IllegalArgumentException if {@code elitePercentage} is not between 0 and 100
+     */
     public TruncationSelection(double elitePercentage) {
-        // Converte porcentagem para fração (ex.: 10 -> 0.10)
+        // Converts percentage to fraction (e.g., 10 -> 0.10)
         if (elitePercentage < 0 || elitePercentage > 100) {
             throw new IllegalArgumentException("Elite percentage must be between 0 and 100");
         }
@@ -16,15 +47,18 @@ public class TruncationSelection implements SelectionStrategy {
     }
 
     /**
-     * O truncamento não usa seleção de índices baseada em fitness,
-     * pois a escolha dos pais é aleatória dentro da elite.
-     * Retornamos um array vazio para cumprir o contrato.
-     */
-    
-
-    /**
-     * Substitui a lógica padrão: copia a elite e gera o restante
-     * por crossover entre indivíduos escolhidos aleatoriamente na elite.
+     * Evolves the population using truncation selection.
+     * <p>
+     * The top {@code eliteFraction} of the population (sorted by fitness)
+     * is copied directly to the new generation. The remaining slots are
+     * filled with offspring generated through crossover between randomly
+     * selected parents from the elite group.
+     * </p>
+     *
+     * @param population the current population, pre-sorted by fitness
+     * @param numParents not used in this strategy (retained for interface compatibility)
+     * @param optimizationMode {@code "MINIMIZATION"} or {@code "MAXIMIZATION"}
+     * @return the new evolved population
      */
     @Override
     public Individual<?>[] evolvePopulation(Individual<?>[] population, int numParents,
@@ -34,17 +68,17 @@ public class TruncationSelection implements SelectionStrategy {
         Individual<?>[] newPopulation = new Individual<?>[popSize];
         Random r = new Random();
 
-        // 1. Copia a elite para o início da nova população
+        // 1. Copy the elite to the beginning of the new population
         for (int i = 0; i < eliteCount; i++) {
             newPopulation[i] = population[i];
         }
 
-        // 2. Preenche os slots restantes com filhos de pais sorteados entre a elite
+        // 2. Fill the remaining slots with children from parents randomly drawn from the elite
         int writeIndex = eliteCount;
         while (writeIndex < popSize) {
             int fatherIdx = r.nextInt(eliteCount);
             int motherIdx = r.nextInt(eliteCount);
-            // Evita autofecundação, se possível
+            // Avoid self-fertilization, if possible
             while (motherIdx == fatherIdx && eliteCount > 1) {
                 motherIdx = r.nextInt(eliteCount);
             }
@@ -58,6 +92,16 @@ public class TruncationSelection implements SelectionStrategy {
         return newPopulation;
     }
 
+    /**
+     * Not used in truncation selection, as parent selection is performed
+     * directly within {@link #evolvePopulation}.
+     *
+     * @param population the current population
+     * @param populationSize the size of the population
+     * @param numParents the number of parents to select
+     * @param optimizationMode {@code "MINIMIZATION"} or {@code "MAXIMIZATION"}
+     * @return an empty array (method not used in this strategy)
+     */
     @Override
     public int[] selectParents(Individual<?>[] population, int populationSize, int numParents, String optimizationMode) {
        return new int[0];

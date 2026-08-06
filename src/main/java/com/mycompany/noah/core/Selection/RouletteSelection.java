@@ -4,14 +4,50 @@ import com.mycompany.noah.core.Individual;
 import com.mycompany.noah.core.Selection.SelectionStrategy;
 import java.util.Random;
 
+/**
+ * Implements roulette wheel (fitness proportionate) selection strategy
+ * for genetic algorithms.
+ * <p>
+ * In roulette selection, each individual's probability of being selected
+ * is proportional to its fitness. For maximization problems, higher fitness
+ * values receive larger slices of the roulette wheel. For minimization
+ * problems, fitness values are inverted so that lower fitness individuals
+ * have higher selection probability.
+ * </p>
+ * <p>
+ * If negative fitness values are present in maximization mode, all fitness
+ * values are shifted by a constant offset to make them non-negative.
+ * </p>
+ *
+ * @author MAUKOSKI, W. X.
+ */
 public class RouletteSelection implements SelectionStrategy {
 
+    /** Random number generator. */
     private final Random r = new Random();
 
+    /**
+     * Selects parents using roulette wheel selection.
+     * <p>
+     * Fitness values are first adjusted to ensure non-negative probabilities:
+     * <ul>
+     *   <li>For {@code MAXIMIZATION}: shifts all fitness values so the minimum becomes zero.</li>
+     *   <li>For {@code MINIMIZATION}: inverts fitness using {@code maxFit - fitness + 1}.</li>
+     * </ul>
+     * Parents are then selected with probability proportional to their adjusted fitness.
+     * </p>
+     *
+     * @param population the current population of individuals
+     * @param popSize the size of the population
+     * @param numParents the number of parents to select
+     * @param optimizationMode {@code "MAXIMIZATION"} or {@code "MINIMIZATION"}
+     * @return an array of indices of the selected parents
+     */
     @Override
-    public int[]selectParents(Individual[] population, int popSize, int numParents, String optimizationMode) {
+    public int[] selectParents(Individual[] population, int popSize, int numParents, String optimizationMode) {
         double[] adjustedFitness = new double[popSize];
         if (optimizationMode.equals("MAXIMIZATION")) {
+            // Find minimum fitness and shift to make all values non-negative
             double minFit = -Double.MIN_VALUE;
             for (int i = 0; i < popSize; i++) {
                 double f = population[i].getFitness();
@@ -24,7 +60,8 @@ public class RouletteSelection implements SelectionStrategy {
                 adjustedFitness[i] = population[i].getFitness() + offset;
             }
         } else {
-            double maxFit = -Double.MAX_VALUE;;
+            // For minimization: invert fitness so lower values get higher weight
+            double maxFit = -Double.MAX_VALUE;
             for (int i = 0; i < popSize; i++) {
                 double f = population[i].getFitness();
                 if (f > maxFit) {
@@ -35,12 +72,14 @@ public class RouletteSelection implements SelectionStrategy {
                 adjustedFitness[i] = maxFit - population[i].getFitness() + 1;
             }
         }
+        
+        // Calculate total adjusted fitness
         double total = 0;
         for (double w : adjustedFitness) {
             total += w;
         }
 
-        
+        // Select parents using the roulette wheel
         int[] parents = new int[numParents];
         for (int i = 0; i < numParents; i++) {
             double point = r.nextDouble() * total;
@@ -55,5 +94,4 @@ public class RouletteSelection implements SelectionStrategy {
         return parents;
     }
 
-   
 }

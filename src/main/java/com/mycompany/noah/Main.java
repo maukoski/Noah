@@ -19,11 +19,11 @@ public class Main {
 
 
         
-        //Agent a = new Agent<>(() -> new IndividualSphere(0.02, 21), 10000, 100000, 2000);
+        Agent a = new Agent<>(() -> new IndividualSphere(0.02, 12), 1000, 10000, 200);
         //Agent a  = new Agent<>(() -> new IndividualCarrier(0.02, 14,3), 1000, 5000, 200);
         //Agent a = new Agent<>(() -> new IndividualRosenbrock(0.02, 12, 2), 1000, 10000, 200);
         //Agent a = new Agent<>(() -> new IndividualShiftedRosenbrock(0.02, 12, 2), 1000, 10000, 200);
-        Agent a = new Agent<>(() -> new IndividualRastrigin(0.05,12,4), 10000, 100000, 2000);
+        //Agent a = new Agent<>(() -> new IndividualRastrigin(0.05,12,4), 10000, 100000, 2000);
         
         RouletteSelection r = new RouletteSelection();
         a.run(Agent.MINIMIZATION, r);
