@@ -3,8 +3,7 @@
  */
 package com.mycompany.noah;
 
-import com.mycompany.noah.Examples.Multimodality.IndividualRastrigin;
-import com.mycompany.noah.Examples.Unimodality.Sphere.IndividualSphere;
+import com.mycompany.noah.Examples.Unimodality.rosenbrock.IndividualShiftedRosenbrock;
 import com.mycompany.noah.core.Agent;
 import com.mycompany.noah.core.selection.RouletteSelection;
 import com.mycompany.noah.tools.BenchmarkRunner;
@@ -19,10 +18,10 @@ public class Main {
 
 
         
-        Agent a = new Agent<>(() -> new IndividualSphere(0.02, 12), 1000, 10000, 200);
+        //Agent a = new Agent<>(() -> new IndividualSphere(0.02, 12), 1000, 10000, 200);
         //Agent a  = new Agent<>(() -> new IndividualCarrier(0.02, 14,3), 1000, 5000, 200);
         //Agent a = new Agent<>(() -> new IndividualRosenbrock(0.02, 12, 2), 1000, 10000, 200);
-        //Agent a = new Agent<>(() -> new IndividualShiftedRosenbrock(0.02, 12, 2), 1000, 10000, 200);
+        Agent a = new Agent<>(() -> new IndividualShiftedRosenbrock(0.02, 12, 2), 1000, 10000, 200);
         //Agent a = new Agent<>(() -> new IndividualRastrigin(0.05,12,4), 10000, 100000, 2000);
         
         RouletteSelection r = new RouletteSelection();
