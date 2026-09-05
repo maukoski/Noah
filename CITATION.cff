@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+
+title: "Noah: An Open-Source Framework for Evolutionary and Genetic Programming"
+
+version: 1.0.0.0
+
+message: "If you use Noah in your research, please cite this software."
+
+type: software
+
+authors:
+  - family-names: "MAUKOSKI"
+    given-names: "W. X."
+
+repository-code: "https://github.com/maukoski/Noah"
+
+doi: "10.5281/zenodo.22314944"
+
+abstract: >
+  Noah is an open-source framework for evolutionary and genetic programming
+  designed to provide an extensible evolutionary infrastructure while allowing
+  complete freedom in genotype representation.
+
+keywords:
+  - genetic programming
+  - evolutionary computation
+  - genetic algorithms
+  - optimization
+  - selection strategies
