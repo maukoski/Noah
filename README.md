@@ -446,7 +446,7 @@ For reproducible research, cite the specific version of Noah used to obtain your
 
 ## License
 
-The license for Noah is currently **to be defined**.
+Noah is released under the Apache License 2.0.
 
 ---
 
