@@ -1,28 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.mycompany</groupId>
-    <artifactId>Noah</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>io.github.maukoski</groupId>
+    <artifactId>noah</artifactId>
+    <version>1.0.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+
+    <name>Noah</name>
+    <description>An open-source framework for evolutionary and genetic programming</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>22</maven.compiler.source>
-        <maven.compiler.target>22</maven.compiler.target>
-        <exec.mainClass>com.mycompany.noah.Noah</exec.mainClass>
+        <maven.compiler.release>26</maven.compiler.release>
+        <junit.version>5.14.4</junit.version>
     </properties>
 
     <dependencies>
+
         <!-- XChart dependency for plotting the fitness history -->
         <dependency>
             <groupId>org.knowm.xchart</groupId>
             <artifactId>xchart</artifactId>
             <version>3.8.0</version>
         </dependency>
+
+        <!-- JUnit 5 for automated tests -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
+
+    <build>
+        
+        <plugins>
+            <!-- Maven Surefire: executes unit tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.6.0</version>
+                <configuration>
+                    <argLine>-Duser.language=en -Duser.country=US</argLine>
+                </configuration>
+            </plugin>
+            
+        </plugins>
+    </build>
 
 </project>

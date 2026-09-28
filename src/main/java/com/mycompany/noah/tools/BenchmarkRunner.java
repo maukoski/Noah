@@ -2,11 +2,11 @@ package com.mycompany.noah.tools;
 
 import com.mycompany.noah.core.Agent;
 import com.mycompany.noah.core.Individual;
-import com.mycompany.noah.core.Selection.BoltzmanSelection;
-import com.mycompany.noah.core.Selection.ProbabilisticTournamentSelection;
-import com.mycompany.noah.core.Selection.SelectionStrategy;
-import com.mycompany.noah.core.Selection.StochasticUniversalSamplingSelection;
-import com.mycompany.noah.core.Selection.TruncationSelection;
+import com.mycompany.noah.core.selection.BoltzmanSelection;
+import com.mycompany.noah.core.selection.ProbabilisticTournamentSelection;
+import com.mycompany.noah.core.selection.SelectionStrategy;
+import com.mycompany.noah.core.selection.StochasticUniversalSamplingSelection;
+import com.mycompany.noah.core.selection.TruncationSelection;
 import com.mycompany.noah.core.selection.RankingSelection;
 import com.mycompany.noah.core.selection.RouletteSelection;
 import com.mycompany.noah.core.selection.TournamentSelection;

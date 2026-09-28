@@ -1,6 +1,6 @@
 package com.mycompany.noah.core;
 
-import com.mycompany.noah.core.Selection.SelectionStrategy;
+import com.mycompany.noah.core.selection.SelectionStrategy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -67,7 +67,7 @@ public class Agent<T extends Individual<?>> {
     }
 
     public Agent(int populationSize, int epoch, int sizeSelection,
-            SelectionStrategy selection, Individual[] population) {
+        SelectionStrategy selection, Individual[] population) {
         this.populationSize = populationSize;
         this.epoch = epoch;
         this.sizeSelection = sizeSelection;

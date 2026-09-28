@@ -3,7 +3,7 @@
  */
 package com.mycompany.noah;
 
-import com.mycompany.noah.Examples.Unimodality.rosenbrock.IndividualShiftedRosenbrock;
+import com.mycompany.noah.examples.unimodality.rosenbrock.IndividualShiftedRosenbrock;
 import com.mycompany.noah.core.Agent;
 import com.mycompany.noah.core.selection.RouletteSelection;
 import com.mycompany.noah.tools.BenchmarkRunner;
