@@ -1,34 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="
+             http://maven.apache.org/POM/4.0.0
+             https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
+
+    <!-- ========================================================= -->
+    <!-- Project coordinates                                       -->
+    <!-- ========================================================= -->
 
     <groupId>io.github.maukoski</groupId>
     <artifactId>noah</artifactId>
     <version>1.0.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
+    <!-- ========================================================= -->
+    <!-- Project information                                       -->
+    <!-- ========================================================= -->
+
     <name>Noah</name>
-    <description>An open-source framework for evolutionary and genetic programming</description>
+
+    <description>
+        An open-source framework for evolutionary and genetic programming
+    </description>
+
+    <url>https://github.com/maukoski/Noah</url>
+
+    <!-- ========================================================= -->
+    <!-- License                                                   -->
+    <!-- ========================================================= -->
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <!-- ========================================================= -->
+    <!-- Developer                                                 -->
+    <!-- ========================================================= -->
+
+    <developers>
+        <developer>
+            <name>W. X. Maukoski</name>
+            <email>SEU_EMAIL_AQUI</email>
+            <organization>Independent Researcher</organization>
+            <organizationUrl>https://github.com/maukoski</organizationUrl>
+
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <!-- ========================================================= -->
+    <!-- Source Control Management                                 -->
+    <!-- ========================================================= -->
+
+    <scm>
+        <connection>
+            scm:git:git://github.com/maukoski/Noah.git
+        </connection>
+
+        <developerConnection>
+            scm:git:ssh://github.com:maukoski/Noah.git
+        </developerConnection>
+
+        <url>https://github.com/maukoski/Noah</url>
+    </scm>
+
+    <!-- ========================================================= -->
+    <!-- Properties                                                -->
+    <!-- ========================================================= -->
 
     <properties>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
         <maven.compiler.release>26</maven.compiler.release>
+
         <junit.version>5.14.4</junit.version>
+
+        <maven.compiler.plugin.version>3.14.1</maven.compiler.plugin.version>
+
+        <maven.surefire.plugin.version>3.6.0</maven.surefire.plugin.version>
+
+        <maven.source.plugin.version>3.3.1</maven.source.plugin.version>
+
+        <maven.javadoc.plugin.version>3.12.0</maven.javadoc.plugin.version>
+
+        <maven.gpg.plugin.version>3.2.8</maven.gpg.plugin.version>
+
+        <central.publishing.plugin.version>0.9.0</central.publishing.plugin.version>
+
     </properties>
+
+    <!-- ========================================================= -->
+    <!-- Dependencies                                              -->
+    <!-- ========================================================= -->
 
     <dependencies>
 
-        <!-- XChart dependency for plotting the fitness history -->
+        <!-- XChart -->
         <dependency>
             <groupId>org.knowm.xchart</groupId>
             <artifactId>xchart</artifactId>
             <version>3.8.0</version>
         </dependency>
 
-        <!-- JUnit 5 for automated tests -->
+        <!-- JUnit -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -38,20 +123,148 @@
 
     </dependencies>
 
+    <!-- ========================================================= -->
+    <!-- Build                                                     -->
+    <!-- ========================================================= -->
+
     <build>
-        
+
         <plugins>
-            <!-- Maven Surefire: executes unit tests -->
+
+            <!-- ================================================= -->
+            <!-- Java Compiler                                    -->
+            <!-- ================================================= -->
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+            </plugin>
+
+            <!-- ================================================= -->
+            <!-- Unit Tests                                        -->
+            <!-- ================================================= -->
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>${maven.surefire.plugin.version}</version>
+
                 <configuration>
-                    <argLine>-Duser.language=en -Duser.country=US</argLine>
+                    <argLine>
+                        -Duser.language=en -Duser.country=US
+                    </argLine>
                 </configuration>
             </plugin>
-            
+
+            <!-- ================================================= -->
+            <!-- Source JAR                                        -->
+            <!-- ================================================= -->
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven.source.plugin.version}</version>
+
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>package</phase>
+
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- ================================================= -->
+            <!-- Javadoc JAR                                       -->
+            <!-- ================================================= -->
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven.javadoc.plugin.version}</version>
+
+                <configuration>
+                    <release>${maven.compiler.release}</release>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <phase>package</phase>
+
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
+
     </build>
+
+    <!-- ========================================================= -->
+    <!-- Release profile                                           -->
+    <!-- ========================================================= -->
+
+    <profiles>
+
+        <profile>
+
+            <id>release</id>
+
+            <build>
+
+                <plugins>
+
+                    <!-- ========================================= -->
+                    <!-- GPG Signing                               -->
+                    <!-- ========================================= -->
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${maven.gpg.plugin.version}</version>
+
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- ========================================= -->
+                    <!-- Maven Central Publishing                 -->
+                    <!-- ========================================= -->
+
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>${central.publishing.plugin.version}</version>
+
+                        <extensions>true</extensions>
+
+                        <configuration>
+                            <publishingServerId>central</publishingServerId>
+                            <autoPublish>false</autoPublish>
+                        </configuration>
+                    </plugin>
+
+                </plugins>
+
+            </build>
+
+        </profile>
+
+    </profiles>
 
 </project>
