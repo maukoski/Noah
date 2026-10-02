@@ -168,12 +168,14 @@
 
                 <executions>
                     <execution>
-                        <id>attach-sources</id>
-                        <phase>package</phase>
-
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
                         <goals>
-                            <goal>jar-no-fork</goal>
+                            <goal>sign</goal>
                         </goals>
+                        <configuration>
+                            <keyname>A7272DE2FFD08B0D</keyname>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
