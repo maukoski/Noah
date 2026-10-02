@@ -29,6 +29,11 @@ public abstract class Individual<T> implements Comparable<Individual<T>> {
         this.mutationTax = mutationTax;
     }
 
+    /**
+     * Constructs an Individual with a predetermined genotype and a mutation tax
+     * @param genotype The genotype of the individual.
+     * @param mutationTax the mutation rate for this individual
+     */
     public Individual(T genotype, double mutationTax) {
         this.genotype = genotype;
         this.mutationTax = mutationTax;
@@ -46,8 +51,8 @@ public abstract class Individual<T> implements Comparable<Individual<T>> {
      * Applies mutation to this individual. This method must be implemented by
      * any concrete subclass to define the mutation logic.
      *
-     * @param genotype
-     * @return
+     * @param genotype the genotype of the concrete implementation of the individual
+     * @return the concrete implementation of the individual
      */
     protected abstract T mutation(T genotype);
 
@@ -56,7 +61,7 @@ public abstract class Individual<T> implements Comparable<Individual<T>> {
      * individuals. This method must be implemented by any concrete subclass to
      * define the crossover logic.
      *
-     * @param parent
+     * @param parent the selected parent to breed with this parent.
      * @return an array of offspring individuals resulting from the crossover
      */
     public abstract Individual[] crossover(Individual parent);

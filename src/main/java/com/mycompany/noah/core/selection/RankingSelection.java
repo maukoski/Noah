@@ -45,6 +45,13 @@ public class RankingSelection implements SelectionStrategy {
      * @param optimizationMode {@code "MINIMIZATION"} or {@code "MAXIMIZATION"}
      * @return an array of indices of the selected parents
      */
+    
+    /**
+     * Creates a new roulette wheel selection strategy instance.
+     */    
+    public RankingSelection() {
+    }
+
     @Override
     public int[] selectParents(Individual[] population, int popSize, int numParents, String optimizationMode) {
         double[] weights = new double[popSize];

@@ -14,42 +14,56 @@ import java.util.Arrays;
 import java.util.function.Supplier;
 
 /**
- * Utility class for benchmarking different selection strategies in the
- * genetic algorithm framework.
+ * Utility class for benchmarking different selection strategies in the genetic
+ * algorithm framework.
  * <p>
  * {@code BenchmarkRunner} runs multiple independent trials (epochs) for each
  * available selection strategy and collects statistics on the error (distance
- * from the known perfect fitness) and the number of generations needed to
- * find the best solution. This allows for comparative analysis of the
- * performance and convergence behavior of different selection methods.
+ * from the known perfect fitness) and the number of generations needed to find
+ * the best solution. This allows for comparative analysis of the performance
+ * and convergence behavior of different selection methods.
  * </p>
  * <p>
  * The following selection strategies are benchmarked:
  * <ul>
- *   <li>Roulette (fitness proportionate)</li>
- *   <li>Ranking</li>
- *   <li>Tournament</li>
- *   <li>Truncation</li>
- *   <li>Stochastic Universal Sampling (SUS)</li>
- *   <li>Probabilistic Tournament</li>
- *   <li>Boltzmann</li>
+ * <li>Roulette (fitness proportionate)</li>
+ * <li>Ranking</li>
+ * <li>Tournament</li>
+ * <li>Truncation</li>
+ * <li>Stochastic Universal Sampling (SUS)</li>
+ * <li>Probabilistic Tournament</li>
+ * <li>Boltzmann</li>
  * </ul>
- * </p>
  *
  * @author MAUKOSKI, W. X.
  */
 public class BenchmarkRunner {
 
-    /** Supplier for creating new individual instances. */
+    /**
+     * Creates a new instace of BenchmarkRunner
+     *
+     */
+    public BenchmarkRunner() {
+    }
+
+    /**
+     * Supplier for creating new individual instances.
+     */
     private static Supplier<Individual> individualSupplier;
-    
-    /** Size of the population for each trial. */
+
+    /**
+     * Size of the population for each trial.
+     */
     private static int populationSize;
-    
-    /** Maximum number of generations per trial. */
+
+    /**
+     * Maximum number of generations per trial.
+     */
     private static int maxGenerations;
-    
-    /** Number of individuals to replace per generation. */
+
+    /**
+     * Number of individuals to replace per generation.
+     */
     private static int numReplacements;
 
     /**
@@ -57,13 +71,18 @@ public class BenchmarkRunner {
      * strategies over multiple independent trials.
      *
      * @param a the agent containing the configuration parameters
-     * @param perfectFitness the known optimal fitness value for error calculation
+     * @param perfectFitness the known optimal fitness value for error
+     * calculation
      * @param epoch the number of independent trials to run per strategy
      * @param optimizationMode {@code "MINIMIZATION"} or {@code "MAXIMIZATION"}
-     * @param tournamentSize the number of individuals per tournament (for tournament-based strategies)
-     * @param trunc the percentage of elite individuals (for truncation selection)
-     * @param probab the probability of selecting the best (for probabilistic tournament)
-     * @param initialTemperature the starting temperature (for Boltzmann selection)
+     * @param tournamentSize the number of individuals per tournament (for
+     * tournament-based strategies)
+     * @param trunc the percentage of elite individuals (for truncation
+     * selection)
+     * @param probab the probability of selecting the best (for probabilistic
+     * tournament)
+     * @param initialTemperature the starting temperature (for Boltzmann
+     * selection)
      */
     public static void evaluation(Agent a, double perfectFitness, int epoch, String optimizationMode,
             int tournamentSize, int trunc, double probab, double initialTemperature) {
@@ -213,7 +232,8 @@ public class BenchmarkRunner {
      * @param perfectFitness the known optimal fitness value
      * @param epoch the number of independent trials
      * @param optimizationMode {@code "MINIMIZATION"} or {@code "MAXIMIZATION"}
-     * @param initialtemperature the starting temperature for the cooling schedule
+     * @param initialtemperature the starting temperature for the cooling
+     * schedule
      */
     private static void BoltzmanEvaluation(double perfectFitness, int epoch, String optimizationMode, double initialtemperature) {
         double[] errors = new double[epoch];
@@ -300,8 +320,8 @@ public class BenchmarkRunner {
     }
 
     /**
-     * Creates a fresh population with newly generated individuals,
-     * resetting the agent to initial conditions for a new trial.
+     * Creates a fresh population with newly generated individuals, resetting
+     * the agent to initial conditions for a new trial.
      *
      * @param selection the selection strategy to be used
      * @return a new {@code Agent} instance with a fresh population

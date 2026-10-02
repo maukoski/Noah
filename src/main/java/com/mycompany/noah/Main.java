@@ -9,11 +9,23 @@ import com.mycompany.noah.core.selection.RouletteSelection;
 import com.mycompany.noah.tools.BenchmarkRunner;
 
 /**
- *
- * @author willi
+ * The main class
+ * @author MAUKOSKI, W. X.
  */
 public class Main {
 
+    /***
+     * The main constructor
+     */
+    public Main() {
+    }
+
+    
+    
+    /**
+     * The main method
+     * @param args main argument
+     */
     public static void main(String[] args) {
 
 

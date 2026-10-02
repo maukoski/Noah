@@ -4,8 +4,22 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for the {@link Best} class.
+ *
+ * <p>
+ * These tests verify that a {@code Best} object correctly stores and returns
+ * the best individual and the generation in which that individual was found.
+ * </p>
+ *
+ * @author MAUKOSKI, W. X.
+ */
 public class BestTest {
 
+    /**
+     * Verifies that the {@link Best} object stores and returns the individual
+     * assigned to it.
+     */
     @Test
     void shouldStoreAndReturnIndividual() {
 
@@ -34,6 +48,10 @@ public class BestTest {
         assertSame(individual, best.getIndividual());
     }
 
+    /**
+     * Verifies that the {@link Best} object stores and returns the generation
+     * associated with the best individual.
+     */
     @Test
     void shouldStoreAndReturnGeneration() {
 

@@ -18,35 +18,89 @@ import org.knowm.xchart.XYChartBuilder;
  * of generations (epochs).
  *
  * @param <T> the type of Individual used in the genetic algorithm
- *
  * @author MAUKOSKI, W. X.
  */
 public class Agent<T extends Individual<?>> {
 
+    /**
+     * Array of individuals that make up the current population.
+     */
     private Individual[] population;
-    private final int populationSize;
-    private Best best;
-    private final int epoch;
-    private final int sizeSelection;
-    public final static String MINIMIZATION = "MINIMIZATION";
-    public final static String MAXIMIZATION = "MAXIMIZATION";
-    public final static String TOURNAMENT = "TOURNAMENT";
-    public final static String ROULETTE = "ROULETTE";
-    public final static String RANKING = "RANKING";
-    private String optimazionalMode;
-    private SelectionStrategy selection;
-    private final ArrayList<Double> fitnessHistory;
-    private Supplier<Individual> individualSupplier; // campo adicionado
 
     /**
-     * Constructs an Agent with a specified population size and number of
-     * generations (epochs) to run.
+     * The fixed size of the population.
+     */
+    private final int populationSize;
+
+    /**
+     * The best individual found so far during the evolutionary process.
+     */
+    private Best best;
+
+    /**
+     * Number of generations (epochs) to be executed.
+     */
+    private final int epoch;
+
+    /**
+     * Number of individuals selected for reproduction.
+     */
+    private final int sizeSelection;
+
+    /**
+     * Constant representing the minimization optimization mode.
+     */
+    public final static String MINIMIZATION = "MINIMIZATION";
+
+    /**
+     * Constant representing the maximization optimization mode.
+     */
+    public final static String MAXIMIZATION = "MAXIMIZATION";
+
+    /**
+     * Constant representing the tournament selection strategy.
+     */
+    public final static String TOURNAMENT = "TOURNAMENT";
+
+    /**
+     * Constant representing the roulette wheel selection strategy.
+     */
+    public final static String ROULETTE = "ROULETTE";
+
+    /**
+     * Constant representing the ranking selection strategy.
+     */
+    public final static String RANKING = "RANKING";
+
+    /**
+     * The optimization mode used by the algorithm (minimization or maximization).
+     */
+    private String optimazionalMode;
+
+    /**
+     * The selection strategy employed to choose individuals for reproduction.
+     */
+    private SelectionStrategy selection;
+
+    /**
+     * History of the best fitness value at each generation.
+     */
+    private final ArrayList<Double> fitnessHistory;
+
+    /**
+     * Supplier used to create new individuals.
+     */
+    private Supplier<Individual> individualSupplier;
+
+    /**
+     * Constructs an Agent and initializes a population using the supplied
+     * individual constructor.
      *
      * @param individualConstructor a Supplier that provides instances of the
      * concrete Individual class
      * @param populationSize the size of the population of individuals
      * @param epoch the number of generations (epochs) to run the algorithm
-     * @param sizeSelection
+     * @param sizeSelection the number of individuals selected for reproduction
      */
     public Agent(Supplier<Individual> individualConstructor, int populationSize, int epoch, int sizeSelection) {
         this.individualSupplier = individualConstructor;  // guarda referência
@@ -58,6 +112,14 @@ public class Agent<T extends Individual<?>> {
 
     }
 
+    /**
+     * Constructs an Agent using an existing population of individuals.
+     *
+     * @param populationSize the size of the population of individuals
+     * @param epoch the number of generations (epochs) to run the algorithm
+     * @param sizeSelection the number of individuals selected for reproduction
+     * @param population the initial population of individuals
+     */
     public Agent(int populationSize, int epoch, int sizeSelection, Individual[] population) {
         this.populationSize = populationSize;
         this.epoch = epoch;
@@ -66,8 +128,18 @@ public class Agent<T extends Individual<?>> {
         this.population = population;
     }
 
+    /**
+     * Constructs an Agent using an existing population and a selection
+     * strategy.
+     *
+     * @param populationSize the size of the population of individuals
+     * @param epoch the number of generations (epochs) to run the algorithm
+     * @param sizeSelection the number of individuals selected for reproduction
+     * @param selection the selection strategy used to generate new individuals
+     * @param population the initial population of individuals
+     */
     public Agent(int populationSize, int epoch, int sizeSelection,
-        SelectionStrategy selection, Individual[] population) {
+            SelectionStrategy selection, Individual[] population) {
         this.populationSize = populationSize;
         this.epoch = epoch;
         this.sizeSelection = sizeSelection;
@@ -90,7 +162,7 @@ public class Agent<T extends Individual<?>> {
         }
     }
 
-        /**
+    /**
      * Executes the genetic algorithm for a specified number of epochs,
      * optimizing either for minimization or maximization of fitness. In each
      * epoch, the population is evaluated, and new individuals are generated
@@ -100,7 +172,6 @@ public class Agent<T extends Individual<?>> {
      * to define the fitness optimization goal.
      * @param selection the selection strategy to use for generating the next
      * generation, such as {@code TOURNAMENT} or {@code ROULETTE}.
-     *
      */
     public void run(String optimization, SelectionStrategy selection) {
         this.best = new Best();
@@ -143,8 +214,7 @@ public class Agent<T extends Individual<?>> {
         // Plot the fitness evolution over generations
         //this.plotFitnessHistory();
     }
-    
-    
+
     /**
      * Creates a new generation of individuals based on the specified selection
      * mode.
@@ -168,7 +238,7 @@ public class Agent<T extends Individual<?>> {
         }
     }
 
-       /**
+    /**
      * Performs tournament selection, selecting a subset of individuals to breed
      * new individuals based on their fitness.
      *
@@ -206,7 +276,7 @@ public class Agent<T extends Individual<?>> {
 
     }
 
-        private void roulette(int newIndividuasl) {
+    private void roulette(int newIndividuasl) {
         Random r = new Random();
         int popSize = this.populationSize;
 
@@ -222,6 +292,7 @@ public class Agent<T extends Individual<?>> {
                     minFit = population[i].getFitness();
                 }
             }
+
             double offset = (minFit < 0) ? -minFit : 0;
             for (int i = 0; i < popSize; i++) {
                 adjustedFitness[i] = population[i].getFitness() + offset;
@@ -240,6 +311,7 @@ public class Agent<T extends Individual<?>> {
                     minFit = fit;
                 }
             }
+
             // 2. Create an array where the lowest fitness has the highest value.
             //    Formula: maxFit - fitness[i] + 1 (ensures all > 0)
             for (int i = 0; i < popSize; i++) {
@@ -316,6 +388,7 @@ public class Agent<T extends Individual<?>> {
                 fatherSelectedIndex -= ranking[fatherIndex];
                 fatherIndex++;
             }
+
             father = population[fatherIndex];
 
             int MotherIndex = 0;
@@ -331,13 +404,18 @@ public class Agent<T extends Individual<?>> {
         }
     }
 
+    /**
+     * Resets the agent to its initial state by creating a new population,
+     * clearing the fitness history, and removing the previously stored best
+     * individual.
+     */
     public void reset() {
         this.poplationInitialization(this.individualSupplier);
         this.fitnessHistory.clear();
         this.best = null; // será recriado no próximo run()
     }
 
-        /**
+    /**
      * Plots the fitness history over the generations using XChart.
      */
     public void plotFitnessHistory() {
@@ -363,26 +441,57 @@ public class Agent<T extends Individual<?>> {
         frame.setVisible(true);
     }
 
+    /**
+     * Returns the Supplier used to create new individuals, including during
+     * benchmark executions.
+     *
+     * @return the Supplier used to create new individuals
+     */
     public Supplier<Individual> getIndividualSupplier() {
         return this.individualSupplier;
     }
 
+    /**
+     * Returns the current population of individuals managed by the agent.
+     *
+     * @return the current population
+     */
     public Individual[] getPopulation() {
         return population;
     }
 
+    /**
+     * Returns the best individual found throughout all executed epochs.
+     *
+     * @return the best individual found during the evolutionary process
+     */
     public Best getBest() {
         return best;
     }
 
+    /**
+     * Returns the configured size of the population.
+     *
+     * @return the population size
+     */
     public int getPopulationSize() {
         return populationSize;
     }
 
+    /**
+     * Returns the current number of epochs configured for the algorithm.
+     *
+     * @return the number of epochs
+     */
     public int getEpoch() {
         return epoch;
     }
 
+    /**
+     * Returns the number of individuals selected to create a new population.
+     *
+     * @return the number of selected individuals
+     */
     public int getSizeSelection() {
         return sizeSelection;
     }

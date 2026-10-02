@@ -4,21 +4,42 @@ import com.mycompany.noah.core.Variables;
 import com.mycompany.noah.core.Individual;
 import java.util.Random;
 
+/**
+ * Represents an individual solution for the Rosenbrock function optimization problem.
+ * The genotype is represented by a set of binary strings, one per variable.
+ * Each binary string is decoded to a real value within the range [MIN_VAL, MAX_VAL].
+ * The fitness is calculated as the value of the Rosenbrock function.
+ *
+ * @author MAUKOSKI W. X.
+ */
 public class IndividualRosenbrock extends Individual<Variables> {
 
-    // Limites do domínio da função Rosenbrock (pode ajustar)
+    /**
+     * Lower bound of the domain for each variable.
+     */
     private static final double MIN_VAL = -5.0;
-    private static final double MAX_VAL = 10.0;
-
-    private int genotypeSize;   // bits por variável
-    private int numVariables;   // dimensão do problema
 
     /**
-     * Construtor para inicialização aleatória.
+     * Upper bound of the domain for each variable.
+     */
+    private static final double MAX_VAL = 10.0;
+
+    /**
+     * Number of bits used to represent each variable.
+     */
+    private int genotypeSize;
+
+    /**
+     * Number of variables (dimension of the problem).
+     */
+    private int numVariables;
+
+    /**
+     * Constructs an individual with a randomly initialized genotype.
      *
-     * @param mutationTax taxa de mutação
-     * @param genotypeSize número de bits por variável
-     * @param numVariables quantidade de variáveis (dimensão)
+     * @param mutationTax the mutation rate
+     * @param genotypeSize the number of bits per variable
+     * @param numVariables the number of variables (dimension)
      */
     public IndividualRosenbrock(double mutationTax, int genotypeSize, int numVariables) {
         super(mutationTax);
@@ -29,33 +50,44 @@ public class IndividualRosenbrock extends Individual<Variables> {
     }
 
     /**
-     * Construtor a partir de um genótipo pronto (usado em crossover).
+     * Constructs an individual from a given genotype (used in crossover).
+     *
+     * @param mutationTax the mutation rate
+     * @param genotype the genotype to assign
      */
     public IndividualRosenbrock(double mutationTax, Variables genotype) {
         super(mutationTax);
-        this.genotypeSize = genotype.getX()[0].length();  // presume strings de mesmo tamanho
+        this.genotypeSize = genotype.getX()[0].length();
         this.numVariables = genotype.getX().length;
         this.setGenotype(genotype);
         this.setFitness(this.fitnessEvaluate());
     }
 
     /**
-     * Converte uma string binária em um valor real dentro de [MIN_VAL,
-     * MAX_VAL].
+     * Decodes a binary string into a real value within the range [MIN_VAL, MAX_VAL].
+     *
+     * @param binary the binary string to decode
+     * @return the decoded real value
      */
     private double decode(String binary) {
-        long intValue = Long.parseLong(binary, 2);                     // 0 a 2^L - 1
+        long intValue = Long.parseLong(binary, 2);
         double maxInt = Math.pow(2, binary.length()) - 1;
         return MIN_VAL + (MAX_VAL - MIN_VAL) * (intValue / maxInt);
     }
 
+    /**
+     * Evaluates the fitness of this individual using the Rosenbrock function.
+     * The Rosenbrock function is defined as the sum over i of
+     * 100 * (x_{i+1} - x_i^2)^2 + (1 - x_i)^2.
+     *
+     * @return the fitness value
+     */
     @Override
     protected double fitnessEvaluate() {
         Variables genotype = this.getGenotype();
         String[] genes = genotype.getX();
         double result = 0.0;
 
-        // Rosenbrock: soma sobre i de 100*(x_{i+1} - x_i^2)^2 + (1 - x_i)^2
         for (int i = 0; i < numVariables - 1; i++) {
             double xi = decode(genes[i]);
             double xi1 = decode(genes[i + 1]);
@@ -64,6 +96,13 @@ public class IndividualRosenbrock extends Individual<Variables> {
         return result;
     }
 
+    /**
+     * Applies mutation to the given genotype. Each bit is flipped with a
+     * probability equal to the mutation rate.
+     *
+     * @param genotype the genotype to mutate
+     * @return the mutated genotype
+     */
     @Override
     protected Variables mutation(Variables genotype) {
         String[] original = genotype.getX();
@@ -76,7 +115,6 @@ public class IndividualRosenbrock extends Individual<Variables> {
             for (int j = 0; j < gene.length(); j++) {
                 char bit = gene.charAt(j);
                 if (r.nextDouble() < this.getMutationTax()) {
-                    // flip
                     sb.append(bit == '1' ? '0' : '1');
                 } else {
                     sb.append(bit);
@@ -87,6 +125,14 @@ public class IndividualRosenbrock extends Individual<Variables> {
         return new Variables(mutated);
     }
 
+    /**
+     * Performs a single-point crossover for each variable between this individual
+     * and the given parent. The resulting children are then mutated and their
+     * fitness is evaluated.
+     *
+     * @param parent the other parent individual
+     * @return an array containing the two offspring individuals
+     */
     @Override
     public Individual[] crossover(Individual parent) {
         Variables father = this.getGenotype();
@@ -96,41 +142,46 @@ public class IndividualRosenbrock extends Individual<Variables> {
         String[] son = new String[numVariables];
         String[] daughter = new String[numVariables];
 
-        // Crossover de um ponto por variável
         for (int i = 0; i < numVariables; i++) {
             String fGene = father.getX()[i];
             String mGene = mother.getX()[i];
-            int point = r.nextInt(fGene.length());  // ponto de corte
+            int point = r.nextInt(fGene.length());
             son[i] = fGene.substring(0, point) + mGene.substring(point);
             daughter[i] = mGene.substring(0, point) + fGene.substring(point);
         }
 
-        // Cria os filhos (já com fitness avaliado sobre o genótipo crossover)
-        // Depois:
         IndividualRosenbrock child1 = this.createIndividual(new Variables(son));
         IndividualRosenbrock child2 = this.createIndividual(new Variables(daughter));
 
-        // Aplica mutação e ATUALIZA fitness
         Variables mutSon = this.mutation((Variables) child1.getGenotype());
         child1.setGenotype(mutSon);
-        child1.setFitness(child1.fitnessEvaluate());   // ← corrigido
+        child1.setFitness(child1.fitnessEvaluate());
 
         Variables mutDaughter = this.mutation((Variables) child2.getGenotype());
         child2.setGenotype(mutDaughter);
-        child2.setFitness(child2.fitnessEvaluate());   // ← corrigido
+        child2.setFitness(child2.fitnessEvaluate());
 
         return new Individual[]{child1, child2};
     }
 
     /**
-     * Método de fábrica para criar um novo indivíduo do mesmo tipo a partir de
-     * um genótipo. Subclasses devem sobrescrever para retornar instâncias da
-     * classe correta.
+     * Factory method to create a new individual of the same type from a given
+     * genotype. Subclasses should override this method to return instances of
+     * the correct class.
+     *
+     * @param genotype the genotype for the new individual
+     * @return a new instance of IndividualRosenbrock
      */
     protected IndividualRosenbrock createIndividual(Variables genotype) {
         return new IndividualRosenbrock(this.getMutationTax(), genotype);
     }
 
+    /**
+     * Initializes the genotype with random binary strings for each variable.
+     *
+     * @param geneLength the number of bits per variable
+     * @param numVars the number of variables
+     */
     private void genotypeInitialization(int geneLength, int numVars) {
         Random r = new Random();
         String[] x = new String[numVars];

@@ -25,7 +25,6 @@ import java.util.Random;
  *       and the corresponding individuals are selected.</li>
  *   <li>Crossover is applied to each consecutive pair of selected parents.</li>
  * </ol>
- * </p>
  *
  * @author MAUKOSKI, W. X.
  */

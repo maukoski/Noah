@@ -13,15 +13,24 @@ package com.mycompany.noah.core;
  * @author MAUKOSKI, W. X.
  */
 public class Best<T> {
+
+    /***
+     * Creates a Best instance.
+     */
+    public Best() {
+    }
     
-    /** The best individual found. */
+    
+
+    /** The best individual found during the genetic algorithm execution. */
     private Individual<T> individual;
-    
+
     /** The generation in which the best individual was found. */
     private int generation;
 
     /**
-     * Returns the best individual found.
+     * Returns the best individual found during the genetic algorithm
+     * execution.
      *
      * @return the best individual
      */
@@ -30,7 +39,7 @@ public class Best<T> {
     }
 
     /**
-     * Sets the best individual.
+     * Sets the individual to be stored as the best individual.
      *
      * @param individual the individual to set as best
      */

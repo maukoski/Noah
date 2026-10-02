@@ -16,7 +16,6 @@ import java.util.Random;
  * </ol>
  * This creates strong selection pressure and converges quickly, but may
  * reduce genetic diversity and lead to premature convergence.
- * </p>
  * <p>
  * Note: This strategy overrides the default {@code evolvePopulation} method
  * instead of implementing the standard parent selection approach, as truncation

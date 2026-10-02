@@ -9,15 +9,41 @@ import com.mycompany.noah.examples.unimodality.carrier.Product;
 import java.util.Random;
 
 /**
+ * Represents an individual solution for a 0/1 knapsack problem applied to
+ * selecting products for a carrier.
  *
- * @author willi
+ * <p>Each gene in the genotype indicates whether the corresponding product is
+ * included (1) or excluded (0). The fitness is the total price of the selected
+ * products, unless the total volume exceeds the carrier's maximum volume, in
+ * which case the fitness is set to 1 as a minimum penalty value.</p>
+ *
+ * @author MAUKOSKI; W. X.
  */
 public class IndividualCarrier extends Individual<int[]> {
 
+    /**
+     * Products available for selection. The product at index {@code i}
+     * corresponds to gene {@code i} in the genotype.
+     */
     private Product[] products;
+
+    /**
+     * Total volume of the selected products, updated during fitness evaluation.
+     */
     private double ownVolume;
+
+    /**
+     * Maximum volume allowed for the carrier.
+     */
     private double maxVolume;
 
+    /**
+     * Creates a new individual with a randomly initialized genotype.
+     *
+     * @param mutationTax the mutation rate used by the genetic algorithm
+     * @param genotypeSize the number of genes in the genotype
+     * @param maxVolume the maximum volume allowed for the carrier
+     */
     public IndividualCarrier(double mutationTax, int genotypeSize, double maxVolume) {
         super(mutationTax);
         this.maxVolume = maxVolume;
@@ -26,6 +52,13 @@ public class IndividualCarrier extends Individual<int[]> {
         this.setFitness(this.fitnessEvaluate());
     }
 
+    /**
+     * Creates a new individual from an existing genotype.
+     *
+     * @param genotype the genotype representing the selected products
+     * @param mutationTax the mutation rate used by the genetic algorithm
+     * @param maxVolume the maximum volume allowed for the carrier
+     */
     public IndividualCarrier(int[] genotype, double mutationTax, double maxVolume) {
         super(genotype, mutationTax);
         this.maxVolume = maxVolume;
@@ -33,6 +66,12 @@ public class IndividualCarrier extends Individual<int[]> {
         this.setFitness(this.fitnessEvaluate());
     }
 
+    /**
+     * Initializes a random binary genotype.
+     *
+     * @param genotypeSize the number of genes to generate
+     * @return a randomly generated binary genotype
+     */
     public int[] genotypeInitialization(int genotypeSize) {
         Random r = new Random();
         int[] result = new int[genotypeSize];
@@ -42,6 +81,15 @@ public class IndividualCarrier extends Individual<int[]> {
         return result;
     }
 
+    /**
+     * Evaluates the fitness of this individual.
+     *
+     * <p>The fitness is the sum of the prices of the selected products. If the
+     * total volume of the selected products exceeds {@link #maxVolume}, the
+     * fitness is set to 1.</p>
+     *
+     * @return the fitness value for this individual
+     */
     @Override
     protected double fitnessEvaluate() {
         double result = 0;
@@ -58,6 +106,15 @@ public class IndividualCarrier extends Individual<int[]> {
         return result;
     }
 
+    /**
+     * Applies mutation to the given genotype.
+     *
+     * <p>Each gene has a probability equal to the mutation rate of being
+     * flipped: 1 becomes 0 and 0 becomes 1.</p>
+     *
+     * @param genotype the genotype to mutate
+     * @return the mutated genotype
+     */
     @Override
     protected int[] mutation(int[] genotype) {
         Random r = new Random();
@@ -75,6 +132,17 @@ public class IndividualCarrier extends Individual<int[]> {
         return genotype;
     }
 
+    /**
+     * Performs a single-point crossover between this individual and another
+     * parent.
+     *
+     * <p>Two children are produced by swapping the genetic material after a
+     * randomly chosen crossover point. Mutation is then applied to both
+     * children.</p>
+     *
+     * @param parent the other parent individual
+     * @return an array containing the two generated children
+     */
     @Override
     public Individual[] crossover(Individual parent) {
         int[] father = this.getGenotype();
@@ -106,6 +174,12 @@ public class IndividualCarrier extends Individual<int[]> {
         return children;
     }
 
+    /**
+     * Initializes the list of available products.
+     *
+     * <p>The products are stored in an array whose indices correspond to the
+     * genotype positions.</p>
+     */
     private void productsInitialization() {
         this.products = new Product[this.getGenotype().length];
         this.products[0] = new Product("Geladeira Dako", 0.751, 999.90);
@@ -124,6 +198,10 @@ public class IndividualCarrier extends Individual<int[]> {
         this.products[13] = new Product("Notebook Asus", 0.0527, 3999.00);
     }
 
+    /**
+     * Prints the genotype, fitness, volume, and selected products of this
+     * individual to standard output.
+     */
     public void print() {
         System.out.print("Genotype: ");
         for (int i = 0; i < this.getGenotype().length; i++) {
@@ -147,7 +225,6 @@ public class IndividualCarrier extends Individual<int[]> {
         }
         System.out.println();
     }
-    
     
 
 }

@@ -29,6 +29,12 @@ public class RouletteSelection implements SelectionStrategy {
     private final Random r = new Random();
 
     /**
+     * Creates a new roulette wheel selection strategy instance.
+     */
+    public RouletteSelection() {
+    }
+
+    /**
      * Selects parents using roulette wheel selection.
      * <p>
      * Fitness values are first adjusted to ensure non-negative probabilities:
@@ -40,7 +46,6 @@ public class RouletteSelection implements SelectionStrategy {
      * </ul>
      * Parents are then selected with probability proportional to their adjusted
      * fitness.
-     * </p>
      *
      * @param population the current population of individuals
      * @param popSize the size of the population
