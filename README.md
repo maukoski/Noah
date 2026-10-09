@@ -9,7 +9,7 @@ Noah is an open-source framework for **Genetic Programming (GP)** designed to pr
 
 The framework implements the general mechanisms required to execute an evolutionary process, allowing researchers and developers to focus on the aspects that are specific to their problem: the representation of individuals, fitness evaluation, mutation, and crossover.
 
-**Version 1.0.0.0** is the first official release of Noah and corresponds to the software version associated with the initial research work describing the framework.
+**Version 1.0.0.1** is the first official release of Noah and corresponds to the software version associated with the initial research work describing the framework.
 
 ---
 
@@ -70,7 +70,7 @@ Noah provides the evolutionary infrastructure around these components.
 
 ### Multiple Selection Strategies
 
-Noah 1.0.0.0 provides seven selection strategies:
+Noah 1.0.0.1 provides seven selection strategies:
 
 1. Roulette Wheel Selection
 2. Ranking Selection
@@ -173,7 +173,7 @@ This abstraction allows selection strategies to be implemented independently fro
 
 ## Getting Started
 
-Noah 1.0.0.0 is currently distributed as a **NetBeans project**.
+Noah 1.0.0.1 is currently distributed as a **NetBeans project**.
 
 ### Requirements
 
@@ -270,7 +270,7 @@ The evolutionary process is managed by `Agent`, while the problem-specific genet
 
 ## Selection Strategies
 
-The following selection strategies are currently implemented in Noah 1.0.0.0:
+The following selection strategies are currently implemented in Noah 1.0.0.1:
 
 | Selection Strategy | General Principle |
 |---|---|
@@ -389,11 +389,11 @@ Online API documentation and additional documentation resources are planned for 
 
 ## Project Status
 
-**Current version:** `1.0.0.0`
+**Current version:** `1.0.0.1`
 
 **Status:** Initial official release
 
-Noah 1.0.0.0 provides the core Genetic Programming framework, seven selection strategies, benchmarking functionality, fitness-history tracking, and official benchmark examples.
+Noah 1.0.0.1 provides the core Genetic Programming framework, seven selection strategies, benchmarking functionality, fitness-history tracking, and official benchmark examples.
 
 The current release is distributed as a NetBeans project.
 
@@ -412,7 +412,7 @@ Future development may include:
 - Additional benchmark problems
 - Expanded experimental and statistical tools
 
-CUDA/GPU acceleration is part of the long-term roadmap and is **not implemented in version 1.0.0.0**.
+CUDA/GPU acceleration is part of the long-term roadmap and is **not implemented in version 1.0.0.1**.
 
 ---
 
@@ -422,7 +422,7 @@ Noah was developed as an open-source research framework for evolutionary and gen
 
 The manuscript describing the Noah framework is currently **under evaluation**.
 
-Version `1.0.0.0` represents the initial software release associated with this research work.
+Version `1.0.0.1` represents the initial software release associated with this research work.
 
 Further research is planned using Noah in practical problems and through comparisons with state-of-the-art evolutionary computation tools.
 
@@ -432,13 +432,13 @@ Further research is planned using Noah in practical problems and through compari
 
 If you use Noah in academic research, please cite the specific software version used in your work.
 
-### Noah 1.0.0.0
+### Noah 1.0.0.1
 
-**MAUKOSKI, W. X.** (2026). *Noah 1.0.0.0: An Open-Source Framework for Evolutionary and Genetic Programming*. Zenodo.
+**MAUKOSKI, W. X.** (2026). *Noah 1.0.0.1: An Open-Source Framework for Evolutionary and Genetic Programming*. Zenodo.
 
 **DOI:** https://doi.org/10.5281/zenodo.22314944
 
-The DOI above identifies the specific Noah 1.0.0.0 release archived in Zenodo.
+The DOI above identifies the specific Noah 1.0.0.1 release archived in Zenodo.
 
 For reproducible research, cite the specific version of Noah used to obtain your results rather than referring only to the repository.
 
