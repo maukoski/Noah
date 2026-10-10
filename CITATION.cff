@@ -16,7 +16,12 @@ authors:
 
 repository-code: "https://github.com/maukoski/Noah"
 
-
+version: 1.0.0.1
+doi: "10.5281/zenodo.22314943"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.22314943"
+    description: "Concept DOI identifying all versions of Noah."
 
 license: "Apache-2.0"
 
