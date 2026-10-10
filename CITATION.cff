@@ -2,9 +2,9 @@ cff-version: 1.2.0
 
 title: "Noah: An Open-Source Framework for Evolutionary and Genetic Programming"
 
-version: 1.0.0.0
+version: 1.0.0.1
 
-date-released: 2026-09-04
+date-released: 2026-10-09
 
 message: "If you use Noah in your research, please cite this software."
 
@@ -16,7 +16,7 @@ authors:
 
 repository-code: "https://github.com/maukoski/Noah"
 
-doi: "10.5281/zenodo.22314944"
+
 
 license: "Apache-2.0"
 
